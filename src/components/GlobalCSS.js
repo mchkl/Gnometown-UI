@@ -57,27 +57,6 @@ export default function GlobalCSS(props){
 
             //    END FONT WEIGHT
 
-            //    DECORATE & ALIGN TEXT
-
-            ".capitalize": {
-                textTransform: "capitalize"
-            },
-
-            ".uppercase": {
-                textTransform: "uppercase"
-            },
-
-            ".align-center": {
-                textAlign: "center"
-            },
-
-            ".align-left":{
-                textAlign: "left"
-            },
-
-            ".align-right":{
-                textAlign: "right"
-            }
         }}/>
     )
 }
