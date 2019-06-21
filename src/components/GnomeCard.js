@@ -6,7 +6,7 @@ import RollingSVG from "../img/rollingSVG.svg";
 //Local components
 import GnomeCardModal from "./GnomeCardModal";
 
-const GnomeCardDiv = styled('div')`
+const GnomeCardDiv = styled.div`
     width: 25%;
     display: inline-block;
     background: white;
@@ -28,7 +28,7 @@ const GnomeCardDiv = styled('div')`
     }
 `;
 
-const GnomeProfilePicImg = styled('img')`
+const GnomeProfilePicImg = styled.img`
     width: 100%;
     object-fit: cover;
     height: 160px;
@@ -51,12 +51,12 @@ const GnomeProfilePicImg = styled('img')`
     
 `;
 
-const GnomeNameH3 = styled('h3')`
+const GnomeNameH3 = styled.h3`
     margin: 0;
     text-align: center;
 `;
 
-const GnomeInfoBoxDiv = styled('div')`
+const GnomeInfoBoxDiv = styled.div`
     width: 100%;
     padding: 10px;
     
@@ -66,7 +66,7 @@ const GnomeInfoBoxDiv = styled('div')`
     justify-content: center;
 `;
 
-const PlaceholderWrapper = styled('div')`
+const PlaceholderWrapper = styled.div`
     width: 100%;
     height: 160px;
     display: flex;
@@ -74,7 +74,7 @@ const PlaceholderWrapper = styled('div')`
     justify-content: center;
 `;
 
-const PlaceholderImg = styled('img')`
+const PlaceholderImg = styled.img`
     width: 50%;
     height: auto;
     

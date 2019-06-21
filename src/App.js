@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'reactstrap';
 //Emotion & React-emotion are used for styling
 import { withTheme } from 'emotion-theming';
 import { injectGlobal, css } from "emotion";
-import styled from "react-emotion";
+import styled from "@emotion/styled";
 //Local components
 import GlobalCSS from "./components/GlobalCSS";
 import Navbar from './components/Navbar';
@@ -38,18 +38,18 @@ injectGlobal`
     }
 `;
 
-const Background = styled('div')`
+const Background = styled.div`
     width: 100%;
     background: #e4e1e1;
     min-height: 100vh;
 `;
 
-const PreloadImg = styled('img')`
+const PreloadImg = styled.img`
     opacity: 0;
     visibility: hidden;
 `;
 
-const COAImg = styled('div')`
+const COAImg = styled.div`
     width: 300px;
     height: 300px;
     background-image: url(${COA});
@@ -61,7 +61,7 @@ const COAImg = styled('div')`
     opacity: 0.4;
 `;
 
-const COAImg2 = styled('div')`
+const COAImg2 = styled.div`
     width: 300px;
     height: 300px;
     background-image: url(${COA2});
@@ -74,7 +74,7 @@ const COAImg2 = styled('div')`
     opacity: 0.4;
 `;
 
-const GnomesWrapperDiv = styled('div')`
+const GnomesWrapperDiv = styled.div`
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -82,7 +82,7 @@ const GnomesWrapperDiv = styled('div')`
     margin-top: 60px;
 `;
 
-const PlaceholderDiv = styled('div')`
+const PlaceholderDiv = styled.div`
     width: 25%;
     height: 200px;
     background-color: gray;
@@ -94,36 +94,26 @@ const PlaceholderDiv = styled('div')`
     }
 `;
 
-const PaginationUl = styled('ul')`
+const PaginationUl = styled.ul`
     text-align: center;
     margin-top: 30px;
     margin-bottom: 30px;
     padding-left: 0;
 `;
 
-const PagerButtonLi = styled('li')`
+const PagerButtonLi = styled.li`
     display: inline-block;
     margin-left: 10px;
     margin-right: 10px;
-    
-    :hover{
-        cursor: pointer;
-    }
-`;
-
-const disabled = css`
-    opacity: 0.7;
+    color: ${props => props.active ? "#7d71de" : ""};
+    border-bottom: ${props => props.active ? '1px solid #7d71de' : ""};
+    opacity: ${props => props.disabled ? 0.7 : 1};
     :hover{
         cursor: not-allowed;
     }
-`;
-
-const active = css`
-    color: #7d71de;
-    border-bottom: 1px solid #7d71de;
     
     :hover{
-        cursor: default;
+        cursor: ${props => props.disabled ? 'not-allowed' : props.active ? 'default' : 'pointer'};
     }
 `;
 
@@ -205,21 +195,21 @@ const Pagination = (props) => {
 
     return (
         <PaginationUl>
-            <PagerButtonLi className={pager.currentPage === 1 ? disabled : ''}>
+            <PagerButtonLi disabled={pager.currentPage === 1}>
                 <a onClick={() => setPage(1)}>First</a>
             </PagerButtonLi>
-            <PagerButtonLi className={pager.currentPage === 1 ? disabled : ''}>
+            <PagerButtonLi disabled={pager.currentPage === 1}>
                 <a onClick={() => setPage(pager.currentPage - 1)}>Previous</a>
             </PagerButtonLi>
             {pager.pages.map((page, index) =>
-                <PagerButtonLi key={index} className={pager.currentPage === page ? active : ''}>
+                <PagerButtonLi key={index} active={pager.currentPage === page}>
                     <a onClick={() => setPage(page)}>{page}</a>
                 </PagerButtonLi>
             )}
-            <PagerButtonLi className={pager.currentPage === pager.totalPages ? disabled : ''}>
+            <PagerButtonLi disabled={pager.currentPage === pager.totalPages}>
                 <a onClick={() => setPage(pager.currentPage + 1)}>Next</a>
             </PagerButtonLi>
-            <PagerButtonLi className={pager.currentPage === pager.totalPages ? disabled : ''}>
+            <PagerButtonLi disabled={pager.currentPage === pager.totalPages}>
                 <a onClick={() => setPage(pager.totalPages)}>Last</a>
             </PagerButtonLi>
         </PaginationUl>
@@ -256,6 +246,12 @@ const App = (props) => {
         return setPageOfItems(pageOfItemsProp)
     };
 
+    const setFilters = (age, weight, height) => {
+        setAge(age);
+        setWeight(weight);
+        setHeight(height);
+    }
+
     const handleCheck = (filter) =>{
         //Filter gnomes
         let checkOption = 0;
@@ -264,7 +260,7 @@ const App = (props) => {
                 checkOption = (age + 1) % 3;
                 let ageSorted =  _.sortBy(cityData,['age']);
 
-                setAge(checkOption);
+                setFilters(checkOption,0,0)
                 setDisplayItems(
                     checkOption === 0 ? ageSorted
                     : checkOption === 1 ? _.reverse(ageSorted)
@@ -275,7 +271,7 @@ const App = (props) => {
                 checkOption = (height + 1) % 3;
                 let heightSorted =  _.sortBy(cityData,['height']);
 
-                setHeight(checkOption);
+                setFilters(0,0,checkOption)
                 setDisplayItems(
                     checkOption === 0 ? heightSorted
                     : checkOption === 1 ? _.reverse(heightSorted)
@@ -287,7 +283,7 @@ const App = (props) => {
                 checkOption = (weight + 1) % 3;
                 let weightSorted =  _.sortBy(cityData,['weight']);
 
-                setWeight(checkOption);
+                setFilters(0,checkOption,0)
                 setDisplayItems(
                     checkOption === 0 ? weightSorted
                     : checkOption === 1 ? _.reverse(weightSorted)

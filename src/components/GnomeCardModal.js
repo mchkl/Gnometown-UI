@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-const GnomeProfilePicDiv = styled('div')`
+const GnomeProfilePicDiv = styled.div`
     width: 100%;
     background-image: url(${props => props.img});
     background-position: center;
@@ -10,33 +10,33 @@ const GnomeProfilePicDiv = styled('div')`
     height: 160px;
 `;
 
-const GnomeNameWrapperDiv = styled('div')`
+const GnomeNameWrapperDiv = styled.div`
     border-bottom: 1px solid ${props => props.theme.gray};
     padding-bottom: 10px;
     margin-bottom: 10px;
 `;
 
-const GnomeNameH3 = styled('h3')`
+const GnomeNameH3 = styled.h3`
     margin: 0;
     text-align: center;
 `;
 
-const GnomeInfoBoxDiv = styled('div')`
+const GnomeInfoBoxDiv = styled.div`
     width: 100%;
     padding: 10px;
     overflow-y: auto;
 `;
 
-const GnomeInfoTitleP = styled('p')`
+const GnomeInfoTitleP = styled.p`
     font-weight: bold;
 `;
 
-const GnomeInfoP = styled('p')`
+const GnomeInfoP = styled.p`
     margin-bottom: 2px;
 `;
 
 
-const BlackScreenDiv = styled('div')`
+const BlackScreenDiv = styled.div`
     visibility: ${props => props.visible ? 'visible' : 'hidden'};
     opacity: ${props => props.visible ? '1' : '0'};
     width: 100%;
@@ -54,7 +54,7 @@ const BlackScreenDiv = styled('div')`
     }
 `;
 
-const GnomeCardModalDiv = styled('div')`
+const GnomeCardModalDiv = styled.div`
     visibility: ${props => props.visible ? 'visible' : 'hidden'};
     opacity: ${props => props.visible ? 1 : 0};
     transform: ${props => props.visible ? 'translateX(-77.3%)' : 'translateX(-200%)'};
@@ -73,11 +73,11 @@ const GnomeCardModalDiv = styled('div')`
     }
 `;
 
-const FlexBoxDiv = styled('div')`
+const FlexBoxDiv = styled.div`
     display: flex;
 `;
 
-const GnomeInfoHalfDiv = styled('div')`
+const GnomeInfoHalfDiv = styled.div`
     width 50%;
     display: inline-block;
 `;

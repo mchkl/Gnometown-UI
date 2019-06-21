@@ -68,7 +68,7 @@ describe('Navbar Component', () => {
 
 ### Comments
 
-The project is using React hooks, arrow functions, images lazy loading, js fetch API, emotion.sh CSS library and jest/enzyme testing.
+The project is using React hooks, arrow functions, images lazy loading, axios API, emotion.sh CSS library and jest/enzyme testing.
 
 ## Authors
 
