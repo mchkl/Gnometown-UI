@@ -18,7 +18,7 @@ on each gnome. A user can search for names and filter gnomes by their age, weigh
 
 The tests are made using Jest and Enzyme
 
-### Break down into end to end tests
+### Tests break down
 
 Standard jest test that checks if the App component is rendered.
 
@@ -69,10 +69,6 @@ describe('Navbar Component', () => {
 ### Comments
 
 The project is using React hooks, arrow functions, images lazy loading, js fetch API, emotion.sh CSS library and jest/enzyme testing.
-
-```
-Give an example
-```
 
 ## Authors
 
