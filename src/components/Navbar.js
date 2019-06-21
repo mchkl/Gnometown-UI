@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 //Import media
 import SortIcon from "../img/sortIcon.svg";
@@ -54,7 +54,7 @@ const CheckBoxSectionWrapperDiv = styled('div')`
     width: 100%;
     text-align: right;
     padding-right: 20px;
-    box-shadow: 0 4px 8px #00000029;
+    box-shadow: 0 6px 8px #00000029;
     z-index: 9;
     max-height: ${props => props.visible ? '50px' : '0px'};
     overflow: hidden;
@@ -62,11 +62,19 @@ const CheckBoxSectionWrapperDiv = styled('div')`
     
     @media(max-width: 500px){
         padding-right: 0;
+        
+        display: flex;
+        justify-content: center;
     }
 `;
 
 const CheckBoxWrapperDiv = styled.div`
     display: inline-block;
+    margin-left: 15px;
+    
+    @media(max-width: 500px){
+        margin-right: 15px;
+    }
 `;
 
 const CheckBoxDiv = styled('div')`
@@ -83,23 +91,9 @@ const CheckBoxDiv = styled('div')`
     }
 `;
 
-const CheckBoxLabel = styled('label')`
-    margin-right: 15px;
-`;
-
-const CheckBoxSelect = styled('select')`
-    border: none;
-    width: fit-content;
-    border-bottom: 1px solid #9091a2;
-    margin-right: 15px;
-    border-top: 1px solid #9091a2;
-      
+const CheckBoxLabel = styled.label`
     :hover{
         cursor: pointer;
-    }
-    
-    :focus{
-        outline: none;
     }
 `;
 
@@ -140,59 +134,48 @@ const SearchBtnDiv = styled('div')`
     }
 `;
 
-export default class Navbar extends React.PureComponent{
-    constructor(props){
-        super(props);
+export default function Navbar(props) {
+    const [searchInputText, setSearchInputText] = useState('');
+    const [showSorting, setShowSorting] = useState(false);
 
-        this.state = {
-            searchSelect: "name"
-        }
+    const handleSearchInput = async(e) =>{
+        await setSearchInputText(e.target.value)
+    };
 
-    }
+    const handleSortDropdown = () => {
+        return setShowSorting(!showSorting);
+    };
 
-    handleSelect(e){
-        this.setState({
-            searchSelect: e.target.value
-        })
-    }
-
-    render(){
-        return(
-            <NavBarDiv id='navbar'>
-                <h1>Brastlewark</h1>
-                    <CheckBoxSectionWrapperDiv visible={this.props.showSorting}>
-                        <CheckBoxLabel>Search by </CheckBoxLabel>
-                        <CheckBoxSelect data-test="selectTab1" id='select-box' onChange={this.handleSelect.bind(this)}>
-                            <option value="name">name</option>
-                            <option value="profession">profession</option>
-                        </CheckBoxSelect>
-                        <CheckBoxWrapperDiv onClick={() => this.props.handleCheck('age')}>
-                            <CheckBoxDiv checked={this.props.age}/>
-                            <CheckBoxLabel>
-                                Age
-                            </CheckBoxLabel>
-                        </CheckBoxWrapperDiv>
-                        <CheckBoxWrapperDiv onClick={() => this.props.handleCheck('height')}>
-                            <CheckBoxDiv checked={this.props.height}/>
-                            <CheckBoxLabel>
-                                Height
-                            </CheckBoxLabel>
-                        </CheckBoxWrapperDiv>
-                        <CheckBoxWrapperDiv onClick={() => this.props.handleCheck('weight')}>
-                            <CheckBoxDiv checked={this.props.weight}/>
-                            <CheckBoxLabel>
-                                Weight
-                            </CheckBoxLabel>
-                        </CheckBoxWrapperDiv>
-                    </CheckBoxSectionWrapperDiv>
-                <SearchWrapperDiv>
-                    <SearchBtnDiv onClick={this.props.handleSearch.bind(this,this.state.searchSelect)}><p>Search</p></SearchBtnDiv>
-                    <SearchInput placeholder={this.state.searchSelect.charAt(0).toUpperCase() + this.state.searchSelect.slice(1,this.state.searchSelect.length)}
-                                 type="text"
-                                 onChange={this.props.handleSearchInput}></SearchInput>
-                </SearchWrapperDiv>
-                <SortBtnDiv onClick={this.props.handleSortDropdown}/>
-            </NavBarDiv>
-        )
-    }
+    return(
+        <NavBarDiv id='navbar'>
+            <h1>Brastlewark</h1>
+            <CheckBoxSectionWrapperDiv visible={showSorting}>
+                <CheckBoxWrapperDiv onClick={() => props.handleCheck('age')}>
+                    <CheckBoxDiv checked={props.age}/>
+                    <CheckBoxLabel>
+                        Age
+                    </CheckBoxLabel>
+                </CheckBoxWrapperDiv>
+                <CheckBoxWrapperDiv onClick={() => props.handleCheck('height')}>
+                    <CheckBoxDiv checked={props.height}/>
+                    <CheckBoxLabel>
+                        Height
+                    </CheckBoxLabel>
+                </CheckBoxWrapperDiv>
+                <CheckBoxWrapperDiv onClick={() => props.handleCheck('weight')}>
+                    <CheckBoxDiv checked={props.weight}/>
+                    <CheckBoxLabel className='no-margin'>
+                        Weight
+                    </CheckBoxLabel>
+                </CheckBoxWrapperDiv>
+            </CheckBoxSectionWrapperDiv>
+            <SearchWrapperDiv>
+                <SearchBtnDiv id='search-btn' onClick={() => { props.handleSearch(searchInputText) }}><p>Search</p></SearchBtnDiv>
+                <SearchInput placeholder='Name'
+                             type="text"
+                             onChange={handleSearchInput} />
+            </SearchWrapperDiv>
+            <SortBtnDiv onClick={handleSortDropdown}/>
+        </NavBarDiv>
+    )
 }

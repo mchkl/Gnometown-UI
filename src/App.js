@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 //Axios is used for fetching data from the server
 import axios from "axios";
 //Reactstrap is used for responsive layout
@@ -7,13 +7,18 @@ import { Container, Row, Col } from 'reactstrap';
 import { withTheme } from 'emotion-theming';
 import { injectGlobal, css } from "emotion";
 import styled from "react-emotion";
-import COA from "./img/COA.png";
-import COA2 from "./img/COA2.png";
-import RollingSVG from "./img/rollingSVG.svg";
 //Local components
 import GlobalCSS from "./components/GlobalCSS";
 import Navbar from './components/Navbar';
 import GnomeCard from './components/GnomeCard';
+//Images
+import COA from "./img/COA.png";
+import COA2 from "./img/COA2.png";
+import RollingSVG from "./img/rollingSVG.svg";
+import SortIcon from "./img/sortIcon.svg";
+import UpIcon from "./img/upIcon.svg";
+import DownIcon from "./img/downIcon.svg";
+import SortGrayIcon from "./img/downIconGray.svg";
 //Lodash is used for higher order functions
 var _ = require('lodash');
 
@@ -126,42 +131,33 @@ const defaultProps = {
     initialPage: 1
 }
 
-class Pagination extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { pager: {} };
-    }
+const Pagination = (props) => {
+    const [pager, handleSetPage] = useState({});
 
-    componentDidMount() {
-        if (this.props.items && this.props.items.length) {
-            this.setPage(this.props.initialPage);
+    useEffect(() => {
+        if (props.items && props.items.length) {
+            setPage(props.initialPage);
         }
-    }
+    }, [props.items]);
 
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props.items !== prevProps.items) {
-            this.setPage(this.props.initialPage);
-        }
-    }
+    const setPage = (page) => {
+        let items = props.items;
+        let pagerVar = pager;
 
-    setPage(page) {
-        let items = this.props.items;
-        let pager = this.state.pager;
-
-        if (page < 1 || page > pager.totalPages) {
+        if (page < 1 || page > pagerVar.totalPages) {
             return;
         }
 
-        pager = this.getPager(items.length, page);
+        pagerVar = getPager(items.length, page);
 
-        let pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
+        let pageOfItemsVar = items.slice(pagerVar.startIndex, pagerVar.endIndex + 1);
 
-        this.setState({ pager: pager });
+        handleSetPage(pagerVar);
 
-        this.props.onChangePage(pageOfItems);
-    }
+        props.onChangePage(pageOfItemsVar);
+    };
 
-    getPager(totalItems, currentPage, pageSize) {
+    const getPager = (totalItems, currentPage, pageSize) => {
         currentPage = currentPage || 1;
 
         pageSize = pageSize || 24;
@@ -203,199 +199,156 @@ class Pagination extends React.Component {
         };
     }
 
-    render() {
-        let pager = this.state.pager;
-
-        if (!pager.pages || pager.pages.length <= 1) {
-            return null;
-        }
-
-        return (
-            <PaginationUl>
-                <PagerButtonLi className={pager.currentPage === 1 ? disabled : ''}>
-                    <a onClick={() => this.setPage(1)}>First</a>
-                </PagerButtonLi>
-                <PagerButtonLi className={pager.currentPage === 1 ? disabled : ''}>
-                    <a onClick={() => this.setPage(pager.currentPage - 1)}>Previous</a>
-                </PagerButtonLi>
-                {pager.pages.map((page, index) =>
-                    <PagerButtonLi key={index} className={pager.currentPage === page ? active : ''}>
-                        <a onClick={() => this.setPage(page)}>{page}</a>
-                    </PagerButtonLi>
-                )}
-                <PagerButtonLi className={pager.currentPage === pager.totalPages ? disabled : ''}>
-                    <a onClick={() => this.setPage(pager.currentPage + 1)}>Next</a>
-                </PagerButtonLi>
-                <PagerButtonLi className={pager.currentPage === pager.totalPages ? disabled : ''}>
-                    <a onClick={() => this.setPage(pager.totalPages)}>Last</a>
-                </PagerButtonLi>
-            </PaginationUl>
-        );
+    if (!pager.pages || pager.pages.length <= 1) {
+        return null;
     }
+
+    return (
+        <PaginationUl>
+            <PagerButtonLi className={pager.currentPage === 1 ? disabled : ''}>
+                <a onClick={() => setPage(1)}>First</a>
+            </PagerButtonLi>
+            <PagerButtonLi className={pager.currentPage === 1 ? disabled : ''}>
+                <a onClick={() => setPage(pager.currentPage - 1)}>Previous</a>
+            </PagerButtonLi>
+            {pager.pages.map((page, index) =>
+                <PagerButtonLi key={index} className={pager.currentPage === page ? active : ''}>
+                    <a onClick={() => setPage(page)}>{page}</a>
+                </PagerButtonLi>
+            )}
+            <PagerButtonLi className={pager.currentPage === pager.totalPages ? disabled : ''}>
+                <a onClick={() => setPage(pager.currentPage + 1)}>Next</a>
+            </PagerButtonLi>
+            <PagerButtonLi className={pager.currentPage === pager.totalPages ? disabled : ''}>
+                <a onClick={() => setPage(pager.totalPages)}>Last</a>
+            </PagerButtonLi>
+        </PaginationUl>
+    );
 }
 
+const App = (props) => {
+    const [loading, setLoading] = useState(true);
+    const [cityData, setCityData] = useState([]);
+    const [displayItems, setDisplayItems] = useState([]);
+    const [pageOfItems, setPageOfItems] = useState(['','','','','','','','','']);
+    const [age, setAge] = useState(0);
+    const [height, setHeight] = useState(0);
+    const [weight, setWeight] = useState(0);
 
+    useEffect(() => {
+        const fetchData = async() => {
+            try {
+                const response = await axios.get('https://raw.githubusercontent.com/rrafols/mobile_test/master/data.json');
+                const { data } = await response;
 
-class App extends React.Component {
-    constructor(props){
-        super(props);
+                setCityData(data.Brastlewark);
+                setDisplayItems(data.Brastlewark);
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
 
-
-        this.state = {
-            loading: true,
-            cityData: [],
-            displayItems: [],
-            searchInputText: "",
-            searchInputTextProfession: "",
-            age: 0,
-            height: 0,
-            weight: 0,
-            showSorting: false,
-            previous:[null],
-            next:[null],
-            //''s are placeholders
-            pageOfItems: ['','','','','','','','']
-        }
-
-        this.handleSearch = this.handleSearch.bind(this);
-        this.handleSearchInput = this.handleSearchInput.bind(this);
-        this.handleCheck = this.handleCheck.bind(this);
-        this.handleSortDropdown = this.handleSortDropdown.bind(this);
-        this.onChangePage = this.onChangePage.bind(this);
-    }
-
-    onChangePage(pageOfItems) {
+    const onChangePage = (pageOfItemsProp) => {
         // update state with new page of items
-        this.setState({ pageOfItems: pageOfItems });
-    }
+        return setPageOfItems(pageOfItemsProp)
+    };
 
-    handleSortDropdown(){
-        this.setState({showSorting: !this.state.showSorting})
-    }
-
-    async componentDidMount(){
-        try {
-            const response = await axios.get('https://raw.githubusercontent.com/rrafols/mobile_test/master/data.json');
-            const { data } = await response;
-            this.setState({
-                cityData: data.Brastlewark,
-                displayItems: data.Brastlewark,
-                loading: false
-            })
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    handleCheck(filter){
+    const handleCheck = (filter) =>{
         //Filter gnomes
         let checkOption = 0;
         switch(filter){
             case 'age':
-                checkOption = (this.state.age + 1) % 3;
-                let ageSorted =  _.sortBy(this.state.cityData,['age']);
-                this.setState({
-                    age: checkOption,
-                    displayItems: checkOption === 0 ? ageSorted
-                        : checkOption === 1 ? _.reverse(ageSorted)
-                        : this.state.cityData
-                })
+                checkOption = (age + 1) % 3;
+                let ageSorted =  _.sortBy(cityData,['age']);
+
+                setAge(checkOption);
+                setDisplayItems(
+                    checkOption === 0 ? ageSorted
+                    : checkOption === 1 ? _.reverse(ageSorted)
+                    : cityData);
                 break;
+
             case 'height':
-                checkOption = (this.state.height + 1) % 3;
-                let heightSorted =  _.sortBy(this.state.cityData,['height']);
-                this.setState({
-                    height: checkOption,
-                    displayItems: checkOption === 0 ? heightSorted
-                        : checkOption === 1 ? _.reverse(heightSorted)
-                            : this.state.cityData
-                })
+                checkOption = (height + 1) % 3;
+                let heightSorted =  _.sortBy(cityData,['height']);
+
+                setHeight(checkOption);
+                setDisplayItems(
+                    checkOption === 0 ? heightSorted
+                    : checkOption === 1 ? _.reverse(heightSorted)
+                    : cityData
+                );
                 break;
-                break;
+
             case 'weight':
-                checkOption = (this.state.weight + 1) % 3;
-                let weightSorted =  _.sortBy(this.state.cityData,['weight']);
-                this.setState({
-                    weight: checkOption,
-                    displayItems: checkOption === 0 ? weightSorted
-                        : checkOption === 1 ? _.reverse(weightSorted)
-                            : this.state.cityData
-                })
+                checkOption = (weight + 1) % 3;
+                let weightSorted =  _.sortBy(cityData,['weight']);
+
+                setWeight(checkOption);
+                setDisplayItems(
+                    checkOption === 0 ? weightSorted
+                    : checkOption === 1 ? _.reverse(weightSorted)
+                    : cityData
+                );
                 break;
+
             default:
                 break;
         }
-    }
+    };
 
-    handleSearch(value){
-        let found = [];
-        if(value === "name"){
-            found = this.state.cityData.filter(x => _.includes(x.name.toLowerCase(), this.state.searchInputText.toLowerCase()))
-        }else found = this.state.cityData.filter(x =>
-            {
-                return x.professions.filter(y =>
-                    {
-                     return _.includes(y.toLowerCase(), this.state.searchInputText.toLowerCase())
-                    }
-                )
-            }
-        )
+    const handleSearch = (value) => {
+        let found = cityData.filter(x => _.includes(x.name.toLowerCase(), value.toLowerCase()))
 
-        this.setState({
-            displayItems: found,
-            age: false,
-            height: false,
-            weight: false
-        })
-    }
+        setDisplayItems(found);
+        setAge(false);
+        setHeight(false);
+        setWeight(false);
+    };
 
-    handleSearchInput(e){
-        this.setState({
-            searchInputText: e.target.value
-        })
-    }
+    return(
+        <Background>
+            <GlobalCSS theme={props.theme}/>
+            <PreloadImg src={RollingSVG}/>
+            <PreloadImg src={SortIcon}/>
+            <PreloadImg src={UpIcon}/>
+            <PreloadImg src={DownIcon}/>
+            <PreloadImg src={SortGrayIcon}/>
+            <COAImg/>
+            <COAImg2/>
+            <Container fluid>
+                <Row>
+                    <Col sm="1" md="2"></Col>
+                    <Col sm="9" md="8">
+                        <Navbar
+                                age={age} weight={weight} height={height}
+                                handleCheck={handleCheck}
+                                handleSearch={handleSearch}  />
+                        <GnomesWrapperDiv>
+                            {
+                                pageOfItems.map((gnome, index) => (
+                                    loading || gnome === "" ? (
+                                        <PlaceholderDiv key={index}/>
+                                    ) : (
+                                        <GnomeCard data={gnome}
+                                                   id={index}
+                                                   key={index}
+                                        />
+                                    )
 
-    render() {
-        return (
-            <Background>
-                <GlobalCSS theme={this.props.theme}/>
-                <PreloadImg src={RollingSVG}/>
-                <COAImg/>
-                <COAImg2/>
-                <Container fluid>
-                    <Row>
-                        <Col sm="1" md="2"></Col>
-                        <Col sm="9" md="8">
-                            <Navbar {... this.state}
-                                handleCheck={this.handleCheck}
-                                handleSearch={this.handleSearch}
-                                handleSearchInput={this.handleSearchInput}
-                                handleSortDropdown={this.handleSortDropdown}  />
-                            <GnomesWrapperDiv>
-                                {
-                                    this.state.pageOfItems.map((gnome, index) => (
-                                        this.state.loading || gnome === "" ? (
-                                            <PlaceholderDiv key={index}/>
-                                            ) : (
-                                            <GnomeCard data={gnome}
-                                                showMore={this.state.showMore}
-                                                id={index}
-                                                onClick={this.handleCardClick}
-                                                key={index}
-                                            />
-                                            )
-
-                                    ))
-                                }
-                            </GnomesWrapperDiv>
-                            <Pagination items={this.state.displayItems} onChangePage={this.onChangePage} />
-                        </Col>
-                        <Col sm="1" md="2"></Col>
-                    </Row>
-                </Container>
-            </Background>
-        );
-    }
+                                ))
+                            }
+                        </GnomesWrapperDiv>
+                        <Pagination items={displayItems} onChangePage={onChangePage} />
+                    </Col>
+                    <Col sm="1" md="2"></Col>
+                </Row>
+            </Container>
+        </Background>
+    );
 }
 
 export default withTheme(App);

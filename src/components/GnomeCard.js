@@ -32,7 +32,23 @@ const GnomeProfilePicImg = styled('img')`
     width: 100%;
     object-fit: cover;
     height: 160px;
-    opacity: 1;
+    display: ${props => props.loaded ? 'block' : 'none'};
+    
+    animation: ${props => props.loaded ? 'fadeInImg cubic-bezier(0.23, 1, 0.32, 1) 1' : 'none'};
+    opacity: 0;
+    animation-fill-mode: forwards;
+    animation-duration: 0.7s;
+    animation-delay: 0.1s;
+    
+    @keyframes fadeInImg{
+        from{
+            opacity: 0
+        }
+        to{
+            opacity: 1
+        }
+    }
+    
 `;
 
 const GnomeNameH3 = styled('h3')`
@@ -61,9 +77,10 @@ const PlaceholderWrapper = styled('div')`
 const PlaceholderImg = styled('img')`
     width: 50%;
     height: auto;
+    
     animation: rotate 0.5s infinite ease-in-out;
     
-    @keyframes{
+    @keyframes fadeInImg{
         from{ transform: rotate(0deg); }
         to{ transform: rotate(360deg); }
     }
@@ -78,15 +95,20 @@ const Placeholder = () => {
     )
 }
 
-export default function GnomeCardElement(props) {
+const GnomeCard = (props) => {
     const [showMore, handleShowMore] = useState(false);
+    const [imgLoaded, handleLoadImg] = useState(false);
 
-    function handleClick() {
+    const handleClick = () => {
         return handleShowMore(true);
     }
 
-    function handleClose() {
+    const handleClose = () => {
         return handleShowMore(false);
+    }
+
+    const onLoad = () => {
+        return handleLoadImg(true);
     }
 
     return (
@@ -96,9 +118,10 @@ export default function GnomeCardElement(props) {
                             handleClose={handleClose}
             />
             <GnomeCardDiv onClick={handleClick} id='gnome-card'>
-                <LazyLoad once={true} height={160} placeholder={<Placeholder />} >
-                    <GnomeProfilePicImg className='gnome-profile-img' src={props.data.thumbnail}/>
+                <LazyLoad offsetTop={400} debounce={false} once={true}>
+                    <GnomeProfilePicImg onLoad={onLoad} loaded={imgLoaded} src={props.data.thumbnail}/>
                 </LazyLoad>
+                {imgLoaded ? null : <Placeholder />}
                 <GnomeInfoBoxDiv>
                     <GnomeNameH3>{props.data.name}</GnomeNameH3>
                 </GnomeInfoBoxDiv>
@@ -107,3 +130,4 @@ export default function GnomeCardElement(props) {
     )
 }
 
+export default GnomeCard

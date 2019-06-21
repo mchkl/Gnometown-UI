@@ -25,7 +25,6 @@ const GnomeInfoBoxDiv = styled('div')`
     width: 100%;
     padding: 10px;
     overflow-y: auto;
-    heigth: 100%
 `;
 
 const GnomeInfoTitleP = styled('p')`
@@ -63,7 +62,6 @@ const GnomeCardModalDiv = styled('div')`
     z-index: 11;
     position: fixed;
     top: 0;
-    // height: 200px;
     height: 100%;
     width: 40%;
     transition: transform 1s, visibility 1s, opacity 1s;
@@ -84,79 +82,66 @@ const GnomeInfoHalfDiv = styled('div')`
     display: inline-block;
 `;
 
-
-export default class GnomeCardModalElement extends React.Component {
-    constructor(props){
-        super(props);
-
-        this.handleClose = this.handleClose.bind(this);
-    }
-
-    handleClose(){
-        this.props.handleClose();
-    }
-
-    render(){
-        return(
-            <React.Fragment>
-                <BlackScreenDiv visible={this.props.showMore} onClick={this.handleClose}/>
-                <GnomeCardModalDiv visible={this.props.showMore}
-                                   onClick={this.props.windowWidth > 768 ? null : this.handleClose}
-                >
-                    <GnomeProfilePicDiv img={this.props.data.thumbnail}/>
-                    <GnomeInfoBoxDiv>
-                        <GnomeNameWrapperDiv>
-                            <GnomeNameH3>{this.props.data.name}</GnomeNameH3>
-                        </GnomeNameWrapperDiv>
-                        <FlexBoxDiv>
-                            <GnomeInfoHalfDiv>
-                                <GnomeInfoTitleP>Profession:</GnomeInfoTitleP>
-                                <ul>
-                                    {this.props.data.professions.length > 0 ?
-                                        this.props.data.professions.map((profession, index) => (
-                                            <li key={index}>
-                                                <GnomeInfoP>{profession}</GnomeInfoP>
-                                            </li>
-                                        ))
-                                        :
-                                        <p>This gnome has no job :(</p>
-                                    }
-                                </ul>
-                            </GnomeInfoHalfDiv>
-                            <GnomeInfoHalfDiv>
-                                <GnomeInfoTitleP>Info:</GnomeInfoTitleP>
-                                <ul>
-                                    <li>
-                                        <GnomeInfoP>Age: {this.props.data.age} y/o</GnomeInfoP>
-                                    </li>
-                                    <li>
-                                        <GnomeInfoP>Height: {(this.props.data.height/100).toFixed(2)} m</GnomeInfoP>
-                                    </li>
-                                    <li>
-                                        <GnomeInfoP>Weight: {this.props.data.weight.toFixed(2)} kg</GnomeInfoP>
-                                    </li>
-                                    <li>
-                                        <GnomeInfoP>Hair color: {this.props.data.hair_color}</GnomeInfoP>
-                                    </li>
-                                </ul>
-                            </GnomeInfoHalfDiv>
-                        </FlexBoxDiv>
-                        <hr/>
-                        <GnomeInfoTitleP>Friends:</GnomeInfoTitleP>
-                        {this.props.data.friends.length > 0 ? (
+export default function GnomeCardModal (props) {
+    return(
+        <React.Fragment>
+            <BlackScreenDiv visible={props.showMore} onClick={() => {props.handleClose()}}/>
+            <GnomeCardModalDiv visible={props.showMore}
+                               onClick={props.windowWidth > 768 ? null : () => {props.handleClose()}}
+            >
+                <GnomeProfilePicDiv img={props.data.thumbnail}/>
+                <GnomeInfoBoxDiv>
+                    <GnomeNameWrapperDiv>
+                        <GnomeNameH3>{props.data.name}</GnomeNameH3>
+                    </GnomeNameWrapperDiv>
+                    <FlexBoxDiv>
+                        <GnomeInfoHalfDiv>
+                            <GnomeInfoTitleP>Profession:</GnomeInfoTitleP>
                             <ul>
-                                {this.props.data.friends.map((friend, index) => (
-                                    <li key={index}>
-                                        <GnomeInfoP>{friend}</GnomeInfoP>
-                                    </li>
-                                ))}
+                                {props.data.professions.length > 0 ?
+                                    props.data.professions.map((profession, index) => (
+                                        <li key={index}>
+                                            <GnomeInfoP>{profession}</GnomeInfoP>
+                                        </li>
+                                    ))
+                                    :
+                                    <p>This gnome has no job :(</p>
+                                }
                             </ul>
-                        ) : (
-                            <p>This gnome is too busy to have friends :(</p>
-                        )}
-                    </GnomeInfoBoxDiv>
-                </GnomeCardModalDiv>
-            </React.Fragment>
-        )
-    }
+                        </GnomeInfoHalfDiv>
+                        <GnomeInfoHalfDiv>
+                            <GnomeInfoTitleP>Info:</GnomeInfoTitleP>
+                            <ul>
+                                <li>
+                                    <GnomeInfoP>Age: {props.data.age} y/o</GnomeInfoP>
+                                </li>
+                                <li>
+                                    <GnomeInfoP>Height: {(props.data.height/100).toFixed(2)} m</GnomeInfoP>
+                                </li>
+                                <li>
+                                    <GnomeInfoP>Weight: {props.data.weight.toFixed(2)} kg</GnomeInfoP>
+                                </li>
+                                <li>
+                                    <GnomeInfoP>Hair color: {props.data.hair_color}</GnomeInfoP>
+                                </li>
+                            </ul>
+                        </GnomeInfoHalfDiv>
+                    </FlexBoxDiv>
+                    <hr/>
+                    <GnomeInfoTitleP>Friends:</GnomeInfoTitleP>
+                    {props.data.friends.length > 0 ? (
+                        <ul>
+                            {props.data.friends.map((friend, index) => (
+                                <li key={index}>
+                                    <GnomeInfoP>{friend}</GnomeInfoP>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>This gnome is too busy to have friends :(</p>
+                    )}
+                </GnomeInfoBoxDiv>
+            </GnomeCardModalDiv>
+        </React.Fragment>
+    )
 }
