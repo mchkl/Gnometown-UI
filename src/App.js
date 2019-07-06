@@ -5,12 +5,16 @@ import axios from "axios";
 import { Container, Row, Col } from 'reactstrap';
 //Emotion & React-emotion are used for styling
 import { withTheme } from 'emotion-theming';
-import { injectGlobal, css } from "emotion";
 import styled from "@emotion/styled";
 //Local components
 import GlobalCSS from "./components/GlobalCSS";
 import Navbar from './components/Navbar';
 import GnomeCard from './components/GnomeCard';
+import Pagination from './components/Pagination';
+import Friends from './components/Friends';
+//Redux
+import { Provider as ReduxProvider } from "react-redux";
+import configureStore from "./redux/store";
 //Images
 import COA from "./img/COA.png";
 import COA2 from "./img/COA2.png";
@@ -22,26 +26,11 @@ import SortGrayIcon from "./img/downIconGray.svg";
 //Lodash is used for higher order functions
 var _ = require('lodash');
 
-injectGlobal`
-    *{
-        font-family: Almendra;
-    }
-    
-    body{
-        width: 100vw;
-        height: 100%;
-        overflow-x: hidden;
-    }
-    
-    ul{
-        padding-left: 30px;
-    }
-`;
-
 const Background = styled.div`
     width: 100%;
     background: #e4e1e1;
     min-height: 100vh;
+    overflow: scroll;
 `;
 
 const PreloadImg = styled.img`
@@ -94,127 +83,7 @@ const PlaceholderDiv = styled.div`
     }
 `;
 
-const PaginationUl = styled.ul`
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    padding-left: 0;
-`;
-
-const PagerButtonLi = styled.li`
-    display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
-    color: ${props => props.active ? "#7d71de" : ""};
-    border-bottom: ${props => props.active ? '1px solid #7d71de' : ""};
-    opacity: ${props => props.disabled ? 0.7 : 1};
-    :hover{
-        cursor: not-allowed;
-    }
-    
-    :hover{
-        cursor: ${props => props.disabled ? 'not-allowed' : props.active ? 'default' : 'pointer'};
-    }
-`;
-
-const defaultProps = {
-    initialPage: 1
-}
-
-const Pagination = (props) => {
-    const [pager, handleSetPage] = useState({});
-
-    useEffect(() => {
-        if (props.items && props.items.length) {
-            setPage(props.initialPage);
-        }
-    }, [props.items]);
-
-    const setPage = (page) => {
-        let items = props.items;
-        let pagerVar = pager;
-
-        if (page < 1 || page > pagerVar.totalPages) {
-            return;
-        }
-
-        pagerVar = getPager(items.length, page);
-
-        let pageOfItemsVar = items.slice(pagerVar.startIndex, pagerVar.endIndex + 1);
-
-        handleSetPage(pagerVar);
-
-        props.onChangePage(pageOfItemsVar);
-    };
-
-    const getPager = (totalItems, currentPage, pageSize) => {
-        currentPage = currentPage || 1;
-
-        pageSize = pageSize || 24;
-
-        let totalPages = Math.ceil(totalItems / pageSize);
-
-        let startPage, endPage;
-        if (totalPages <= 10) {
-            startPage = 1;
-            endPage = totalPages;
-        } else {
-            if (currentPage <= 6) {
-                startPage = 1;
-                endPage = 10;
-            } else if (currentPage + 4 >= totalPages) {
-                startPage = totalPages - 9;
-                endPage = totalPages;
-            } else {
-                startPage = currentPage - 5;
-                endPage = currentPage + 4;
-            }
-        }
-
-        let startIndex = (currentPage - 1) * pageSize;
-        let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
-
-        let pages = [...Array((endPage + 1) - startPage).keys()].map(i => startPage + i);
-
-        return {
-            totalItems: totalItems,
-            currentPage: currentPage,
-            pageSize: pageSize,
-            totalPages: totalPages,
-            startPage: startPage,
-            endPage: endPage,
-            startIndex: startIndex,
-            endIndex: endIndex,
-            pages: pages
-        };
-    }
-
-    if (!pager.pages || pager.pages.length <= 1) {
-        return null;
-    }
-
-    return (
-        <PaginationUl>
-            <PagerButtonLi disabled={pager.currentPage === 1}>
-                <a onClick={() => setPage(1)}>First</a>
-            </PagerButtonLi>
-            <PagerButtonLi disabled={pager.currentPage === 1}>
-                <a onClick={() => setPage(pager.currentPage - 1)}>Previous</a>
-            </PagerButtonLi>
-            {pager.pages.map((page, index) =>
-                <PagerButtonLi key={index} active={pager.currentPage === page}>
-                    <a onClick={() => setPage(page)}>{page}</a>
-                </PagerButtonLi>
-            )}
-            <PagerButtonLi disabled={pager.currentPage === pager.totalPages}>
-                <a onClick={() => setPage(pager.currentPage + 1)}>Next</a>
-            </PagerButtonLi>
-            <PagerButtonLi disabled={pager.currentPage === pager.totalPages}>
-                <a onClick={() => setPage(pager.totalPages)}>Last</a>
-            </PagerButtonLi>
-        </PaginationUl>
-    );
-}
+const reduxStore = configureStore(window.REDUX_INITIAL_DATA);
 
 const App = (props) => {
     const [loading, setLoading] = useState(true);
@@ -230,6 +99,8 @@ const App = (props) => {
             try {
                 const response = await axios.get('https://raw.githubusercontent.com/rrafols/mobile_test/master/data.json');
                 const { data } = await response;
+
+                console.log(data);
 
                 setCityData(data.Brastlewark);
                 setDisplayItems(data.Brastlewark);
@@ -306,44 +177,47 @@ const App = (props) => {
     };
 
     return(
-        <Background>
-            <GlobalCSS theme={props.theme}/>
-            <PreloadImg src={RollingSVG}/>
-            <PreloadImg src={SortIcon}/>
-            <PreloadImg src={UpIcon}/>
-            <PreloadImg src={DownIcon}/>
-            <PreloadImg src={SortGrayIcon}/>
-            <COAImg/>
-            <COAImg2/>
-            <Container fluid>
-                <Row>
-                    <Col sm="1" md="2"></Col>
-                    <Col sm="9" md="8">
-                        <Navbar
-                                age={age} weight={weight} height={height}
-                                handleCheck={handleCheck}
-                                handleSearch={handleSearch}  />
-                        <GnomesWrapperDiv>
-                            {
-                                pageOfItems.map((gnome, index) => (
-                                    loading || gnome === "" ? (
-                                        <PlaceholderDiv key={index}/>
-                                    ) : (
-                                        <GnomeCard data={gnome}
-                                                   id={index}
-                                                   key={index}
-                                        />
-                                    )
+        <ReduxProvider store={reduxStore}>
+            <Background>
+                <GlobalCSS theme={props.theme}/>
+                <PreloadImg src={RollingSVG}/>
+                <PreloadImg src={SortIcon}/>
+                <PreloadImg src={UpIcon}/>
+                <PreloadImg src={DownIcon}/>
+                <PreloadImg src={SortGrayIcon}/>
+                <COAImg/>
+                <COAImg2/>
+                <Container fluid>
+                    <Row>
+                        <Col sm="1" md="2"></Col>
+                        <Col sm="10" md="8">
+                            <Navbar
+                                    age={age} weight={weight} height={height}
+                                    handleCheck={handleCheck}
+                                    handleSearch={handleSearch}  />
+                            <GnomesWrapperDiv>
+                                {
+                                    pageOfItems.map((gnome, index) => (
+                                        loading || gnome === "" ? (
+                                            <PlaceholderDiv key={index}/>
+                                        ) : (
+                                            <GnomeCard data={gnome}
+                                                       id={index}
+                                                       key={index}
+                                            />
+                                        )
 
-                                ))
-                            }
-                        </GnomesWrapperDiv>
-                        <Pagination items={displayItems} onChangePage={onChangePage} />
-                    </Col>
-                    <Col sm="1" md="2"></Col>
-                </Row>
-            </Container>
-        </Background>
+                                    ))
+                                }
+                            </GnomesWrapperDiv>
+                            <Pagination items={displayItems} onChangePage={onChangePage} />
+                            <Friends />
+                        </Col>
+                        <Col sm="1" md="2"></Col>
+                    </Row>
+                </Container>
+            </Background>
+        </ReduxProvider>
     );
 }
 

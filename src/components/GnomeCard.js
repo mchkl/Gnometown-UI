@@ -13,7 +13,7 @@ const GnomeCardDiv = styled.div`
     margin: 10px;
     height: fit-content;
     box-shadow: 0 1px 5px #00000029;
-    transition: width 0.5s;
+    transition: width 0.5s , box-shadow 0.3s, transform 0.3s;
     
     h3{
         font-size: 17px;
@@ -21,6 +21,8 @@ const GnomeCardDiv = styled.div`
     
     :hover{
         cursor: pointer;
+        box-shadow: 0 6px 10px #00000029;
+        transform: scale(1.04);
     }
     
     @media(max-width: 768px){
@@ -97,14 +99,19 @@ const Placeholder = () => {
 
 const GnomeCard = (props) => {
     const [showMore, handleShowMore] = useState(false);
+    const [modalIsClosing, handleSetClosing] = useState(false);
     const [imgLoaded, handleLoadImg] = useState(false);
 
     const handleClick = () => {
+        handleSetClosing(false);
         return handleShowMore(true);
     }
 
     const handleClose = () => {
-        return handleShowMore(false);
+        handleSetClosing(true);
+        let timeout = setTimeout(() => {
+            return handleShowMore(false);
+        }, 1000)
     }
 
     const onLoad = () => {
@@ -113,10 +120,12 @@ const GnomeCard = (props) => {
 
     return (
         <React.Fragment>
-            <GnomeCardModal {...props}
-                            showMore={showMore}
-                            handleClose={handleClose}
-            />
+            {showMore ?
+                <GnomeCardModal {...props}
+                                isClosing={modalIsClosing}
+                                handleClose={handleClose}
+                />
+                : null}
             <GnomeCardDiv onClick={handleClick} id='gnome-card'>
                 <LazyLoad offsetTop={400} debounce={false} once={true}>
                     <GnomeProfilePicImg onLoad={onLoad} loaded={imgLoaded} src={props.data.thumbnail}/>

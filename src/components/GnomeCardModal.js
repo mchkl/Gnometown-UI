@@ -1,5 +1,8 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "@emotion/styled";
+import Button from "./Button";
+import {connect} from "react-redux";
+import ACTIONS from "../redux/action";
 
 const GnomeProfilePicDiv = styled.div`
     width: 100%;
@@ -49,9 +52,7 @@ const BlackScreenDiv = styled.div`
     pointer-events: ${props => props.visible ? 'auto' : 'none'};
     transition: opacity 1s, visibility 1s;
     
-    :hover{
-        cursor: pointer;
-    }
+    
 `;
 
 const GnomeCardModalDiv = styled.div`
@@ -82,12 +83,45 @@ const GnomeInfoHalfDiv = styled.div`
     display: inline-block;
 `;
 
-export default function GnomeCardModal (props) {
+const GnomeFriendsHeadWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const GnomeCardModal = (props) => {
+    const [showModal, handleShowModal] = useState(false);
+
+    useEffect(() => {
+        let timeout = setTimeout(() => {
+            return handleShowModal(true);
+        }, 100)
+    }, []);
+
+    const handleAddFriend = () => {
+        props.addFriend(props.data);
+    }
+
+    const handleunfriend = () => {
+        props.unfriend(props.data.id);
+    }
+
+    const stopPropagation = (e) => {
+        e.stopPropagation();
+    }
+
+    const handleClose = (e) => {
+        e.stopPropagation();
+
+    }
+
+    let isFriend = props.friends.filter(friend => friend.friend.id === props.data.id).length > 0;
+    console.log(props.data.id);
+
     return(
         <React.Fragment>
-            <BlackScreenDiv visible={props.showMore} onClick={() => {props.handleClose()}}/>
-            <GnomeCardModalDiv visible={props.showMore}
-                               onClick={props.windowWidth > 768 ? null : () => {props.handleClose()}}
+            <BlackScreenDiv visible={showModal && !props.isClosing} onClick={() => {props.handleClose()}}/>
+            <GnomeCardModalDiv visible={showModal  && !props.isClosing}
+                               onClick={window.innerWidth > 768 ? stopPropagation : () => {props.handleClose()}}
             >
                 <GnomeProfilePicDiv img={props.data.thumbnail}/>
                 <GnomeInfoBoxDiv>
@@ -128,14 +162,24 @@ export default function GnomeCardModal (props) {
                         </GnomeInfoHalfDiv>
                     </FlexBoxDiv>
                     <hr/>
-                    <GnomeInfoTitleP>Friends:</GnomeInfoTitleP>
-                    {props.data.friends.length > 0 ? (
+                    <GnomeFriendsHeadWrapper>
+                        <GnomeInfoTitleP>Friends:</GnomeInfoTitleP>
+                        <Button onClick={isFriend ? handleunfriend : handleAddFriend}>
+                            {isFriend ? 'Unfriend' : 'Become friends'}
+                        </Button>
+                    </GnomeFriendsHeadWrapper>
+                    {props.data.friends.length > 0 || isFriend ? (
                         <ul>
                             {props.data.friends.map((friend, index) => (
                                 <li key={index}>
                                     <GnomeInfoP>{friend}</GnomeInfoP>
                                 </li>
                             ))}
+                            {isFriend ?
+                                <li>
+                                    <GnomeInfoP>You</GnomeInfoP>
+                                </li>
+                            : null}
                         </ul>
                     ) : (
                         <p>This gnome is too busy to have friends :(</p>
@@ -145,3 +189,17 @@ export default function GnomeCardModal (props) {
         </React.Fragment>
     )
 }
+
+const mapStateToProps = state => ({
+    friends: state.friends
+});
+
+const mapDispatchToProps = dispatch => ({
+    addFriend: friend => dispatch(ACTIONS.addFriend(friend)),
+    unfriend: id => dispatch(ACTIONS.unfriend(id))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(GnomeCardModal);
