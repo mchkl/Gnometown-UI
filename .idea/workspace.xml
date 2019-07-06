@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5232b862-1bd3-47ff-a743-3c19d2ec5855" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/Button.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Friends.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Pagination.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/action.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/reducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/redux/store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/GnomeCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/GnomeCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/GnomeCardModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/GnomeCardModal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -27,12 +16,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="App.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="App.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2825">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            <state relative-caret-position="405">
+              <caret line="195" column="9" lean-forward="true" selection-start-line="195" selection-start-column="9" selection-end-line="195" selection-end-column="9" />
               <folding>
+                <element signature="e#269#313#0" expanded="true" />
                 <element signature="e#416#463#0" expanded="true" />
                 <element signature="e#558#614#0" expanded="true" />
               </folding>
@@ -85,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="action.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/redux/action.js">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="18" lean-forward="true" selection-start-column="18" selection-end-column="18" />
+            <state relative-caret-position="136">
+              <caret line="8" column="76" selection-start-line="8" selection-start-column="76" selection-end-line="8" selection-end-column="76" />
             </state>
           </provider>
         </entry>
@@ -182,8 +172,8 @@
       <find>props.st</find>
       <find>friendspop</find>
       <find>40%</find>
-      <find>width</find>
       <find>showmore</find>
+      <find>width</find>
     </findStrings>
     <replaceStrings>
       <replace>Check</replace>
@@ -207,7 +197,6 @@
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/__tests__/GnomeCardTest.js" />
         <option value="$PROJECT_DIR$/src/__tests__/NavbarTests.js" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/redux/store.js" />
         <option value="$PROJECT_DIR$/src/components/Navbar.js" />
         <option value="$PROJECT_DIR$/src/components/Pagination.js" />
@@ -219,6 +208,7 @@
         <option value="$PROJECT_DIR$/src/components/Friends.js" />
         <option value="$PROJECT_DIR$/src/components/GnomeCardModal.js" />
         <option value="$PROJECT_DIR$/src/App.js" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -324,12 +314,12 @@
       <workItem from="1540499535302" duration="56627000" />
       <workItem from="1544228901295" duration="1403000" />
       <workItem from="1560716968285" duration="69369000" />
-      <workItem from="1562370460890" duration="15244000" />
+      <workItem from="1562370460890" duration="15354000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="142643000" />
+    <option name="totallyTimeSpent" value="142753000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="22" width="1382" height="754" extended-state="6" />
@@ -373,6 +363,7 @@
         <state relative-caret-position="4947">
           <caret line="301" column="13" selection-start-line="301" selection-start-column="13" selection-end-line="301" selection-end-column="13" />
           <folding>
+            <element signature="e#269#313#0" expanded="true" />
             <element signature="e#416#463#0" expanded="true" />
             <element signature="e#558#614#0" expanded="true" />
           </folding>
@@ -459,6 +450,7 @@
         <state relative-caret-position="8670">
           <caret line="510" column="67" selection-start-line="510" selection-start-column="67" selection-end-line="510" selection-end-column="67" />
           <folding>
+            <element signature="e#269#313#0" expanded="true" />
             <element signature="e#416#463#0" expanded="true" />
             <element signature="e#558#614#0" expanded="true" />
           </folding>
@@ -487,6 +479,7 @@
         <state relative-caret-position="8670">
           <caret line="510" column="67" selection-start-line="510" selection-start-column="67" selection-end-line="510" selection-end-column="67" />
           <folding>
+            <element signature="e#269#313#0" expanded="true" />
             <element signature="e#416#463#0" expanded="true" />
             <element signature="e#558#614#0" expanded="true" />
           </folding>
@@ -570,13 +563,6 @@
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1190">
-          <caret line="70" column="77" selection-start-line="70" selection-start-column="77" selection-end-line="70" selection-end-column="77" />
         </state>
       </provider>
     </entry>
@@ -704,12 +690,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2825">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="405">
+          <caret line="195" column="9" lean-forward="true" selection-start-line="195" selection-start-column="9" selection-end-line="195" selection-end-column="9" />
           <folding>
+            <element signature="e#269#313#0" expanded="true" />
             <element signature="e#416#463#0" expanded="true" />
             <element signature="e#558#614#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="76" selection-start-line="8" selection-start-column="76" selection-end-line="8" selection-end-column="76" />
         </state>
       </provider>
     </entry>

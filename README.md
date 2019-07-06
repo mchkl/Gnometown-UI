@@ -4,6 +4,10 @@ This is a test project aimed to provide a UI to display profiles of citizens of 
 will see a set of cards with photo and name of gnomes. Upon clicking on one of the cards a modal is being shown providing more information
 on each gnome. A user can search for names and filter gnomes by their age, weight and height.
 
+*Update:
+
+- You can now add/remove friends to/from your friends' list thanks to Redux.
+
 ## Running the project
 
 - Fork this project at https://github.com/mchkl/Gnometown-UI.
@@ -68,7 +72,7 @@ describe('Navbar Component', () => {
 
 ### Comments
 
-The project is using React hooks, arrow functions, images lazy loading, axios API, emotion.sh CSS library and jest/enzyme testing.
+The project is using React hooks, redux, arrow functions, images lazy loading, axios API, emotion.sh CSS library and jest/enzyme testing.
 
 ## Authors
 
