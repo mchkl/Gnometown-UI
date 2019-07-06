@@ -76,4 +76,4 @@ The project is using React hooks, redux, arrow functions, images lazy loading, a
 
 ## Authors
 
-* **Mykhailo Kolesnyk** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Mykhailo Kolesnyk**
