@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const theme = {
     darkBlue: '#212529',
     gray: '#e8e8e8'
-}
+};
 
 ReactDOM.render(
     <ThemeProvider theme={theme}>

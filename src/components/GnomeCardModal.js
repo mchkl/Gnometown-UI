@@ -58,7 +58,7 @@ const BlackScreenDiv = styled.div`
 const GnomeCardModalDiv = styled.div`
     visibility: ${props => props.visible ? 'visible' : 'hidden'};
     opacity: ${props => props.visible ? 1 : 0};
-    transform: ${props => props.visible ? 'translateX(-77.3%)' : 'translateX(-200%)'};
+    transform: ${props => props.visible ? 'translateX(-75.3%)' : 'translateX(-200%)'};
     background-color: white;
     z-index: 11;
     position: fixed;

@@ -25,9 +25,11 @@ const FriendsModalAndBgWrapper = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
+    opacity: ${props => props.visible ? 1 : 0};
     justify-content: center;
     align-items: center;
     z-index: 10;
+    transition: opacity 0.3s;
 `;
 
 const FriendsModalWrapper = styled.div`

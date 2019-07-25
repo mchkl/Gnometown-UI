@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-//Lazyload images
-import LazyLoad from "react-lazyload";
 import RollingSVG from "../img/rollingSVG.svg";
 //Local components
 import GnomeCardModal from "./GnomeCardModal";
@@ -127,9 +125,7 @@ const GnomeCard = (props) => {
                 />
                 : null}
             <GnomeCardDiv onClick={handleClick} id='gnome-card'>
-                <LazyLoad offsetTop={400} debounce={false} once={true}>
-                    <GnomeProfilePicImg onLoad={onLoad} loaded={imgLoaded} src={props.data.thumbnail}/>
-                </LazyLoad>
+                <GnomeProfilePicImg onLoad={onLoad} loaded={imgLoaded} src={props.data.thumbnail}/>
                 {imgLoaded ? null : <Placeholder />}
                 <GnomeInfoBoxDiv>
                     <GnomeNameH3>{props.data.name}</GnomeNameH3>

@@ -158,6 +158,12 @@ export default function Navbar(props) {
         return setShowSorting(!showSorting);
     };
 
+    const handleKeyDown = async(e) => {
+        if (e.key === 'Enter') {
+            await props.handleSearch(searchInputText);
+        }
+    }
+
     return(
         <NavBarDiv id='navbar'>
             <h1>Brastlewark</h1>
@@ -170,7 +176,9 @@ export default function Navbar(props) {
                 <SearchBtnDiv id='search-btn' onClick={() => { props.handleSearch(searchInputText) }}><p>Search</p></SearchBtnDiv>
                 <SearchInput placeholder='Name'
                              type="text"
-                             onChange={handleSearchInput} />
+                             onChange={handleSearchInput}
+                             onKeyDown={handleKeyDown}
+                />
             </SearchWrapperDiv>
             <SortBtnDiv onClick={handleSortDropdown}/>
         </NavBarDiv>
